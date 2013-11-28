@@ -45,5 +45,10 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         alert('Received Event: ' + id);
+
+        var bluetoothSerial = cordova.require('bluetoothSerial');
+        bluetoothSerial.list(function(success){
+            alert(success)
+        }, failure);
     }
 };
