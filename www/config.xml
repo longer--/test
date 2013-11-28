@@ -47,10 +47,7 @@
     <preference name="android-installLocation"    value="auto" />           <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->
 
     <!-- Plugins can also be added here. -->
-<<<<<<< HEAD
     <gap:plugin name="com.megster.cordova.bluetoothserial" />
-=======
->>>>>>> 09ebdb6a646b8baeb14a2f6f1ca46a0800b190ad
     <!--
         <gap:plugin name="Example" />
         A list of available plugins are available at https://build.phonegap.com/docs/plugins
