@@ -47,13 +47,12 @@ var app = {
 
         alert('Received Event: ' + id);
 
+        var bluetoothSerial = cordova.require('bluetoothSerial');
         if(bluetoothSerial){
-            alert('bluetoothSerial yes')
+            alert('bluetoothSerial yes');
         } else {
-            alert('bluetoothSerial yes')
+            alert('bluetoothSerial no');
         }
-
-        // alert(cordova)
     },
 };
 var bluetooth = {
@@ -67,4 +66,4 @@ var bluetooth = {
             }
         ); 
     }
-}
+};
