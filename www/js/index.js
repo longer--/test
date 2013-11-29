@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+var bluetoothSerial = cordova.require('bluetoothSerial');
 
 var app = {
     // Application Constructor
@@ -47,7 +48,6 @@ var app = {
 
         alert('Received Event: ' + id);
 
-        var bluetoothSerial = cordova.require('bluetoothSerial');
         if(bluetoothSerial){
             alert('bluetoothSerial yes');
         } else {
