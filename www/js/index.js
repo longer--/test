@@ -65,5 +65,16 @@ var bluetooth = {
                 alert("Bluetooth is *not* enabled");
             }
         ); 
+    },
+    list : function(){
+        bluetoothSerial.list(function(devices) {
+            devices.forEach(function(device) {
+                alert(device.address);
+            });
+        },
+            function() { 
+                alert("List failed");
+            }
+        );
     }
 };
