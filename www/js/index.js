@@ -47,7 +47,6 @@ var app = {
 
         alert('Received Event: ' + id);
 
-        var bluetoothSerial = cordova.require('bluetoothSerial');
         if(bluetoothSerial){
             alert('bluetoothSerial yes')
         } else {
@@ -57,15 +56,15 @@ var app = {
         // alert(cordova)
     },
 };
-// var bluetooth = {
-//     isEnabled: function(){
-//         bluetoothSerial.isEnabled(
-//             function() { 
-//                 alert("Bluetooth is enabled");
-//             },
-//             function() { 
-//                 alert("Bluetooth is *not* enabled");
-//             }
-//         ); 
-//     }
-// }
+var bluetooth = {
+    isEnabled: function(){
+        bluetoothSerial.isEnabled(
+            function() { 
+                alert("Bluetooth is enabled");
+            },
+            function() { 
+                alert("Bluetooth is *not* enabled");
+            }
+        ); 
+    }
+}
