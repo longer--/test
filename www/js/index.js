@@ -69,7 +69,7 @@ var bluetooth = {
     list : function(){
         bluetoothSerial.list(function(devices) {
             //devices.forEach(function(device) {
-                alert(device.address);
+                alert(devices);
             //});
         },
             function() { 
