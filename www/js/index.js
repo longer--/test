@@ -1,5 +1,5 @@
-var bluetoothSerial = cordova.require('bluetoothSerial'),
-    elemBTindicator = document.getElementById('bluetooth_indicator'),
+var bluetoothSerial = cordova.require('bluetoothSerial');
+var elemBTindicator = document.getElementById('bluetooth_indicator'),
     elemLogBox = document.getElementById('logs_box');
 
 var app = {
@@ -25,8 +25,9 @@ var app = {
         //receivedElement = parentElement.querySelector('.received');
         //receivedElement.setAttribute('style', 'display:block;');
     receivedEvent: function() {
-        app.logm('Устройство готово')
-        bluetooth.status();
+        //app.logm('Устройство готово')
+        //bluetooth.status();
+        alert('onDeviceReady')
     },
     logm: function(m){
         var newMess = document.createElement('p');
