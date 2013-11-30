@@ -84,12 +84,13 @@ var bluetooth = {
     connect : function(){
         alert('bluetooth.connect')
         var id = '00:13:FD:AB:1E:23';
+        //var id = '00:13:46:01:1F:A9';
 
         app.logm('Соединение с:'+ id +'...');
 
         bluetoothSerial.connect(
             id,
-            app.logm('connectSuccess'),
+            bluetooth.openPort,
             function(reason) {
                 var details = "Ошибка подключения: ";
                 if (reason) {
@@ -98,5 +99,10 @@ var bluetooth = {
                 app.logm(details);
             }
         );
+    },
+    openPort: function(){
+        bluetoothSerial.subscribe('\n', function (data) {
+            app.logm(data);
+        });
     }
 };
