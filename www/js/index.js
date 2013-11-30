@@ -101,6 +101,8 @@ var bluetooth = {
         );
     },
     openPort: function(){
+        alert('bluetooth.connect success!')
+
         bluetoothSerial.subscribe('\n', function (data) {
             app.logm(data);
         });
