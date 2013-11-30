@@ -60,7 +60,7 @@ var bluetooth = {
         alert('bluetooth.list')
 
         app.logm('Поиск устройств...');
-        bluetoothSerial.list(bluetooth.ondevicelist, failure); 
+        bluetoothSerial.list(bluetooth.ondevicelist); 
     },
     ondevicelist : function(devices){    
         alert('bluetooth.ondevicelist')
@@ -91,7 +91,7 @@ var bluetooth = {
             id,
             app.logm('connectSuccess'),
             function(reason) {
-                var details = "";
+                var details = "Ошибка подключения";
                 if (reason) {
                     details += ": " + JSON.stringify(reason);
                 }
