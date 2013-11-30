@@ -19,8 +19,6 @@ var app = {
         alert('app.bindEvents before');
 
         document.addEventListener('deviceready', this.onDeviceReady, false);
-
-        alert('app.bindEvents after');
     },
     // deviceready Event Handler
     //
@@ -28,7 +26,7 @@ var app = {
         alert('app.onDeviceReady');
 
         app.logm('Устройство готово')
-        bluetooth.status();
+        bluetooth.init();
     },
     logm: function(m){
         var newMess = document.createElement('p');
@@ -37,22 +35,24 @@ var app = {
     }
 };
 var bluetooth = {
-    status: function(){
+    init: function(){
         if(bluetoothSerial){
-            app.logm('Bluetooth включен');
-            elemBTindicator.innerText = 'Bluetooth on';
+            // Bluetooth init
+            bluetooth.isEnabled();
         } else {
-            app.logm('Bluetooth выключен');
-            elemBTindicator.innerText = 'Bluetooth off';
+            app.logm('bluetoothSerial не инициализирован');
+            return false;
         }
     },
     isEnabled: function(){
         bluetoothSerial.isEnabled(
             function() { 
-                alert("Bluetooth is enabled");
+                app.logm('Bluetooth включен');
+                elemBTindicator.innerText = 'Bluetooth on';
             },
             function() { 
-                alert("Bluetooth is *not* enabled");
+                app.logm('Bluetooth выключен');
+                elemBTindicator.innerText = 'Bluetooth off';
             }
         ); 
     }//,
