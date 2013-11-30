@@ -60,26 +60,24 @@ var bluetooth = {
         alert('bluetooth.list')
 
         app.logm('Поиск устройств...');
-        bluetoothSerial.list(bluetooth.ondevicelist, failure); 
-    },
-    ondevicelist : function(devices){    
-        alert('bluetooth.ondevicelist')
 
-        devices.forEach(function(device) {    
-            if (device.hasOwnProperty("uuid")) {
-                app.logm('device.uuid:' + device.uuid);
-            } else if (device.hasOwnProperty("address")) {
-                app.logm('device.address:' + device.address);
+        bluetoothSerial.list(function(devices){    
+            devices.forEach(function(device) {    
+                if (device.hasOwnProperty("uuid")) {
+                    app.logm('device.uuid:' + device.uuid);
+                } else if (device.hasOwnProperty("address")) {
+                    app.logm('device.address:' + device.address);
+                } else {
+                    app.logm('ERROR:' + JSON.stringify(device));
+                }
+            });
+
+            if (devices.length === 0) {           
+                app.logm("Bluetooth устройства не найдены");               
             } else {
-                app.logm('ERROR:' + JSON.stringify(device));
+                app.logm('Найдено ' + devices.length + ' устройств');           
             }
-        });
-
-        if (devices.length === 0) {           
-            app.logm("Bluetooth устройства не найдены");               
-        } else {
-            app.logm('Найдено ' + devices.length + ' устройств');           
-        }
+        }, failure); 
     },
     connect : function(){
         alert('bluetooth.connect')
