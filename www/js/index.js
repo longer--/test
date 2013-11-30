@@ -91,9 +91,9 @@ var bluetooth = {
             id,
             app.logm('connectSuccess'),
             function(reason) {
-                var details = "Ошибка подключения";
+                var details = "Ошибка подключения: ";
                 if (reason) {
-                    details += ": " + JSON.stringify(reason);
+                    details += JSON.stringify(reason);
                 }
                 app.logm(details);
             }
