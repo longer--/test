@@ -60,7 +60,13 @@ var bluetooth = {
         alert('bluetooth.list')
 
         app.logm('Поиск устройств...');
-        bluetoothSerial.list(bluetooth.ondevicelist(devices), app.logm('Ошибка поиска устройств'));      
+        //bluetoothSerial.list(bluetooth.ondevicelist(devices), app.logm('Ошибка поиска устройств'));
+        bluetoothSerial.list(function(devices) {
+            devices.forEach(function(device) {
+                alert('bluetooth.list')
+                app.logm(device.address);
+            })
+        }, app.logm('Ошибка поиска устройств'));      
     },
     ondevicelist : function(devices){    
         alert('bluetooth.ondevicelist')
