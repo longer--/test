@@ -55,8 +55,30 @@ var bluetooth = {
                 elemBTindicator.innerText = 'Bluetooth off';
             }
         ); 
-    }//,
-    // list : function(){
-    //     bluetoothSerial.list(app.ondevicelist, app.generateFailureFunction("List Failed"));      
-    // }
+    },
+    list : function(event){
+        alert('bluetooth.list')
+
+        app.logm('Поиск устройств...');
+        bluetoothSerial.list(bluetooth.ondevicelist, app.logm('Ошибка поиска устройств'));      
+    },
+    ondevicelist : function(devices){    
+        alert('bluetooth.ondevicelist')
+
+        devices.forEach(function(device) {    
+            if (device.hasOwnProperty("uuid")) {
+                app.logm('device.uuid:' + device.uuid);
+            } else if (device.hasOwnProperty("address")) {
+                app.logm('device.address:' + device.address);
+            } else {
+                app.logm('ERROR:' + JSON.stringify(device));
+            }
+        });
+
+        if (devices.length === 0) {           
+            app.logm("Bluetooth устройства не найдены");               
+        } else {
+            app.logm('Найдено ' + devices.length + ' устройств'));           
+        }
+    }
 };
