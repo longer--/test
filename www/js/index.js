@@ -78,7 +78,7 @@ var bluetooth = {
         if (devices.length === 0) {           
             app.logm("Bluetooth устройства не найдены");               
         } else {
-            app.logm('Найдено ' + devices.length + ' устройств'));           
+            app.logm('Найдено ' + devices.length + ' устройств');           
         }
     }
 };
