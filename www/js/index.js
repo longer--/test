@@ -1,7 +1,7 @@
 alert('begin');
 var bluetoothSerial = cordova.require('bluetoothSerial');
-var elemBTindicator = document.getElementById('bluetooth_indicator'),
-    elemLogBox = document.getElementById('logs_box');
+// var elemBTindicator = document.getElementById('bluetooth_indicator'),
+//     elemLogBox = document.getElementById('logs_box');
 alert('after var');
 
 var app = {
