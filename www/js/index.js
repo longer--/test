@@ -1,7 +1,7 @@
 alert('begin');
-//var bluetoothSerial = cordova.require('bluetoothSerial');
-// var elemBTindicator = document.getElementById('bluetooth_indicator'),
-//     elemLogBox = document.getElementById('logs_box');
+var bluetoothSerial = cordova.require('bluetoothSerial');
+var elemBTindicator = document.getElementById('bluetooth_indicator'),
+    elemLogBox = document.getElementById('logs_box');
 alert('after var');
 
 var app = {
@@ -16,9 +16,11 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        alert('app.bindEvents');
+        alert('app.bindEvents before');
 
         document.addEventListener('deviceready', this.onDeviceReady, false);
+
+        alert('app.bindEvents after');
     },
     // deviceready Event Handler
     //
@@ -26,17 +28,10 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         alert('app.onDeviceReady');
-
         app.receivedEvent();
-    },
-    // Update DOM on a Received Event
-        //receivedElement = parentElement.querySelector('.received');
-        //receivedElement.setAttribute('style', 'display:block;');
-    receivedEvent: function() {
-        alert('app.receivedEvent');
 
-        //app.logm('Устройство готово')
-        //bluetooth.status();
+        app.logm('Устройство готово')
+        bluetooth.status();
     },
     logm: function(m){
         var newMess = document.createElement('p');
