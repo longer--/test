@@ -60,10 +60,11 @@ var bluetooth = {
         alert('bluetooth.list')
 
         app.logm('Поиск устройств...');
-        bluetoothSerial.list(bluetooth.ondevicelist, app.logm('Ошибка поиска устройств'));      
+        bluetoothSerial.list(bluetooth.ondevicelist(devices), app.logm('Ошибка поиска устройств'));      
     },
     ondevicelist : function(devices){    
         alert('bluetooth.ondevicelist')
+        alert(devices)
 
         devices.forEach(function(device) {    
             if (device.hasOwnProperty("uuid")) {
