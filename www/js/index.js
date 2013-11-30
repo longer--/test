@@ -60,7 +60,7 @@ var bluetooth = {
         alert('bluetooth.list')
 
         app.logm('Поиск устройств...');
-        bluetoothSerial.list(bluetooth.ondevicelist(devices), failure); 
+        bluetoothSerial.list(bluetooth.ondevicelist, failure); 
     },
     ondevicelist : function(devices){    
         alert('bluetooth.ondevicelist')
@@ -83,11 +83,12 @@ var bluetooth = {
     },
     connect : function(){
         alert('bluetooth.connect')
-        app.logm('Соединение с:'+ macAddress_or_uuid +'...');
+        var id = '00:13:FD:AB:1E:23';
 
-        var macAddress_or_uuid = '00:13:FD:AB:1E:23';
+        app.logm('Соединение с:'+ id +'...');
+
         bluetoothSerial.connect(
-            macAddress_or_uuid,
+            id,
             app.logm('connectSuccess'),
             app.logm('connectFailure')
         );
