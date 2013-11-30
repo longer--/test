@@ -1,22 +1,6 @@
- /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-var bluetoothSerial = cordova.require('bluetoothSerial');
+//var bluetoothSerial = cordova.require('bluetoothSerial'),
+    elemBTindicator = document.getElementById('bluetooth_indicator'),
+    elemLogBox = document.getElementById('logs_box');
 
 var app = {
     // Application Constructor
@@ -35,27 +19,31 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+        app.receivedEvent();
     },
     // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        alert('Received Event: ' + id);
-
-        if(bluetoothSerial){
-            alert('bluetoothSerial yes');
-        } else {
-            alert('bluetoothSerial no');
-        }
+        //receivedElement = parentElement.querySelector('.received');
+        //receivedElement.setAttribute('style', 'display:block;');
+    receivedEvent: function() {
+        app.logm('Устройство готово')
+        bluetooth.status();
     },
+    logm: function(m){
+        var newMess = document.createElement('p');
+        newMess.innerHTML = m;
+        elemLogBox.appendChild(newMess);
+    }
 };
 var bluetooth = {
+    status: function(){
+        if(bluetoothSerial){
+            app.logm('Bluetooth включен');
+            elemBTindicator.innerText = 'Bluetooth on';
+        } else {
+            app.logm('Bluetooth выключен');
+            elemBTindicator.innerText = 'Bluetooth off';
+        }
+    },
     isEnabled: function(){
         bluetoothSerial.isEnabled(
             function() { 
@@ -65,16 +53,8 @@ var bluetooth = {
                 alert("Bluetooth is *not* enabled");
             }
         ); 
-    },
-    list : function(){
-        bluetoothSerial.list(function(devices) {
-            //devices.forEach(function(device) {
-                alert(devices);
-            //});
-        },
-            function() { 
-                alert("List failed");
-            }
-        );
-    }
+    }//,
+    // list : function(){
+    //     bluetoothSerial.list(app.ondevicelist, app.generateFailureFunction("List Failed"));      
+    // }
 };
