@@ -60,24 +60,26 @@ var bluetooth = {
         alert('bluetooth.list')
 
         app.logm('Поиск устройств...');
+        bluetoothSerial.list(bluetooth.ondevicelist, failure); 
+    },
+    ondevicelist : function(devices){    
+        alert('bluetooth.ondevicelist')
 
-        bluetoothSerial.list(function(devices){    
-            devices.forEach(function(device) {    
-                if (device.hasOwnProperty("uuid")) {
-                    app.logm('device.uuid:' + device.uuid);
-                } else if (device.hasOwnProperty("address")) {
-                    app.logm('device.address:' + device.address);
-                } else {
-                    app.logm('ERROR:' + JSON.stringify(device));
-                }
-            });
-
-            if (devices.length === 0) {           
-                app.logm("Bluetooth устройства не найдены");               
+        devices.forEach(function(device) {    
+            if (device.hasOwnProperty("uuid")) {
+                app.logm('device.uuid:' + device.uuid);
+            } else if (device.hasOwnProperty("address")) {
+                app.logm('device.address:' + device.address);
             } else {
-                app.logm('Найдено ' + devices.length + ' устройств');           
+                app.logm('ERROR:' + JSON.stringify(device));
             }
-        }, failure); 
+        });
+
+        if (devices.length === 0) {           
+            app.logm("Bluetooth устройства не найдены");               
+        } else {
+            app.logm('Найдено ' + devices.length + ' устройств');           
+        }
     },
     connect : function(){
         alert('bluetooth.connect')
@@ -88,7 +90,13 @@ var bluetooth = {
         bluetoothSerial.connect(
             id,
             app.logm('connectSuccess'),
-            app.logm('connectFailure')
+            function(reason) {
+                var details = "";
+                if (reason) {
+                    details += ": " + JSON.stringify(reason);
+                }
+                app.logm(details);
+            }
         );
     }
 };
