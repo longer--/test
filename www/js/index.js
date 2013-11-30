@@ -1,13 +1,13 @@
-alert('begin');
+//alert('begin');
 var bluetoothSerial = cordova.require('bluetoothSerial');
 var elemBTindicator = document.getElementById('bluetooth_indicator'),
     elemLogBox = document.getElementById('logs_box');
-alert('after var');
+//alert('after var');
 
 var app = {
     // Application Constructor
     initialize: function() {
-        alert('app.initialize');
+    //    alert('app.initialize');
 
         this.bindEvents();
     },
@@ -16,14 +16,14 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        alert('app.bindEvents before');
+    //    alert('app.bindEvents before');
 
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     // deviceready Event Handler
     //
     onDeviceReady: function() {
-        alert('app.onDeviceReady');
+    //    alert('app.onDeviceReady');
 
         app.logm('Устройство готово')
         bluetooth.init();
@@ -60,17 +60,10 @@ var bluetooth = {
         alert('bluetooth.list')
 
         app.logm('Поиск устройств...');
-        //bluetoothSerial.list(bluetooth.ondevicelist(devices), app.logm('Ошибка поиска устройств'));
-        bluetoothSerial.list(function(devices) {
-            devices.forEach(function(device) {
-                alert('bluetooth.list')
-                app.logm(device.address);
-            })
-        }, app.logm('Ошибка поиска устройств'));      
+        bluetoothSerial.list(bluetooth.ondevicelist(devices), failure); 
     },
     ondevicelist : function(devices){    
         alert('bluetooth.ondevicelist')
-        alert(devices)
 
         devices.forEach(function(device) {    
             if (device.hasOwnProperty("uuid")) {
@@ -87,5 +80,16 @@ var bluetooth = {
         } else {
             app.logm('Найдено ' + devices.length + ' устройств');           
         }
+    },
+    connect : function(){
+        alert('bluetooth.connect')
+        app.logm('Соединение с:'+ macAddress_or_uuid +'...');
+
+        var macAddress_or_uuid = '00:13:FD:AB:1E:23';
+        bluetoothSerial.connect(
+            macAddress_or_uuid,
+            app.logm('connectSuccess'),
+            app.logm('connectFailure')
+        );
     }
 };
