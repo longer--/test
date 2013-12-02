@@ -1,6 +1,7 @@
 //alert('begin');
 var bluetoothSerial = cordova.require('bluetoothSerial');
 var elemBTindicator = document.getElementById('bluetooth_indicator'),
+    message = document.getElementById('message'),
     elemLogBox = document.getElementById('logs_box');
 //alert('after var');
 
@@ -78,7 +79,7 @@ var bluetooth = {
         if (devices.length === 0) {           
             app.logm("Bluetooth устройства не найдены");               
         } else {
-            app.logm('Найдено ' + devices.length + ' устройств');           
+            app.logm('Найдено ' + devices.length + ' Bluetooth устройств');           
         }
     },
     connect : function(){
@@ -86,7 +87,7 @@ var bluetooth = {
         var id = '00:13:FD:AB:1E:23';
         //var id = '00:13:46:01:1F:A9';
 
-        app.logm('Соединение с:'+ id +'...');
+        app.logm('Соединение с: '+ id +'...');
 
         bluetoothSerial.connect(
             id,
@@ -100,11 +101,92 @@ var bluetooth = {
             }
         );
     },
+    disconnect: function(){
+        alert('bluetooth.disconnect');
+
+        bluetoothSerial.disconnect(
+            function(){
+                app.logm('Соединение разорвано');
+            },
+            function(){
+                app.logm('Неудача при разрыве соединения');
+            }
+        );
+    },
     openPort: function(){
-        alert('bluetooth.connect success!')
+        alert('bluetooth.connect success!');
+        app.logm('Соединение установлено!');
+
+        bluetooth.available();
+        bluetooth.read();
+        bluetooth.readUntil();
+        bluetooth.subscribe();
+    },
+    write: function(){
+        alert('bluetooth.write');
+
+        var data = message.value + "\n";
+        bluetoothSerial.write(data,
+            function(){
+                app.logm('<b>'+ data +'<b/> отправлено');
+            }, function(){
+                app.logm('Неудача при отправке <b>'+ data +'<b/>');
+            }
+        );
+    },
+    available: function(){
+        alert('bluetooth.available');
+
+        bluetoothSerial.available(function (numBytes) {
+            app.logm("There are " + numBytes + " available to read.");
+        });
+    },
+    read: function(){
+        alert('bluetooth.read');
+
+        bluetoothSerial.read(function (data) {
+            app.logm(data);
+        });
+    },
+    readUntil: function(){
+        alert('bluetooth.read');
+
+        bluetoothSerial.readUntil('\n', function (data) {
+            app.logm(data);
+        });
+    },
+    subscribe: function(){
+        alert('bluetooth.subscribe');
 
         bluetoothSerial.subscribe('\n', function (data) {
             app.logm(data);
+        });
+    },
+    unsubscribe: function(){
+        alert('bluetooth.unsubscribe');
+
+        bluetoothSerial.unsubscribe(function () {
+            app.logm('Подписка разорвана');
+        });
+    },
+    clear: function(){
+        alert('bluetooth.unsubscribe');
+
+        bluetoothSerial.clear(function(){
+            app.logm('Буфер очишен');
+        });
+    },
+    isConnected: function(){
+        alert('bluetooth.isConnected');
+
+        bluetoothSerial.isConnected(function(connected){
+            if(connected){
+                app.logm('Соединение присутствует');
+            } else {
+                app.logm('Соединение отсутствует');
+
+                bluetooth.connect();
+            }
         });
     }
 };
