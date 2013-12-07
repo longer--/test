@@ -5,34 +5,52 @@
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World</title>
+        <title>Test Bluetooth Serial</title>
     </head>
     <body>
         <div id="header">
             <div id="bluetooth_indicator">
                 Проверка Bluetooth...
             </div>
+            <div id="connect_indicator">
+                Подключения отсутствуют
+            </div>
         </div>
-        <div id="buttons_box">
-            <button onclick="bluetooth.list();">bluetooth.list();</button>
-            <button onclick="bluetooth.connect();">bluetooth.connect();</button>
-            <button onclick="bluetooth.disconnect();">bluetooth.disconnect();</button>
-            <button onclick="bluetooth.available();">bluetooth.available();</button>
-            <button onclick="bluetooth.read();">bluetooth.read();</button>
-            <button onclick="bluetooth.readUntil();">bluetooth.readUntil();</button>
-            <button onclick="bluetooth.subscribe();">bluetooth.subscribe();</button>
-            <button onclick="bluetooth.unsubscribe();">bluetooth.unsubscribe();</button>
-            <button onclick="bluetooth.clear();">bluetooth.clear();</button>
-            <button onclick="bluetooth.isConnected();">bluetooth.isConnected();</button>
-
-            <textarea id="message"></textarea>
-            <button onclick="bluetooth.write();">bluetooth.write();</button>
-        </div>
-        <div id="logs_box">
+        <div id="content">
+            <div class="tabs_control">
+                <a class="tab_btn active" href="#main_page">Тест</a>
+                <a class="tab_btn" href="#logs_page">Логи</a>
+            </div>
+            <div class="tabs_wrap">
+                <div id="main_page" class="tab_cont active">
+                    <div>
+                        <textarea id="postArea"></textarea>
+                        <a id="btnWrite" class="btn_ctrl" href="#">Write</a>
+                        <a id="btnConnect" class="btn_ctrl" href="#">Connect</a>
+                        <a id="btnList" class="btn_ctrl" href="#">List</a>
+                        <a id="btn0xC0" class="btn_ctrl" href="#">0xC0</a>
+                    </div>
+                    <div>
+                        <a id="btnSubscribe" class="btn_ctrl" href="#">Subscribe</a>
+                        <a id="btnReadUntil" class="btn_ctrl" href="#">Read Until</a>
+                        <a id="btnRead" class="btn_ctrl" href="#">Read</a>
+                        <a id="btnAvailable" class="btn_ctrl" href="#">Available</a>
+                    </div>
+                    <div>
+                        <a id="btnUnsubscribe" class="btn_ctrl" href="#">Unsubscribe</a>
+                        <a id="btnClear" class="btn_ctrl" href="#">Clear</a>
+                        <a id="btnDisconnect" class="btn_ctrl" href="#">Disconnect</a>
+                        <a id="btnClearLogs" class="btn_ctrl" href="#">Clear Logs</a>
+                    </div>
+                    <div id="logs_short" class="logs short_logs_block"></div>
+                </div>
+                <div id="logs_page" class="tab_cont logs"></div>
+            </div>
         </div>
         <script type="text/javascript" src="phonegap.js"></script>
         <script type="text/javascript" src="cordova-2.7.0.js"></script>
         <script type="text/javascript" src="js/bluetoothSerial.js"></script>
+        <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
             app.initialize();

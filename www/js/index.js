@@ -1,192 +1,258 @@
-//alert('begin');
 var bluetoothSerial = cordova.require('bluetoothSerial');
-var elemBTindicator = document.getElementById('bluetooth_indicator'),
-    message = document.getElementById('message'),
-    elemLogBox = document.getElementById('logs_box');
-//alert('after var');
-
 var app = {
-    // Application Constructor
     initialize: function() {
-    //    alert('app.initialize');
-
+        alert('app.initialize');
         this.bindEvents();
     },
-    // Bind Event Listeners
-    //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-    //    alert('app.bindEvents before');
-
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
-    // deviceready Event Handler
-    //
     onDeviceReady: function() {
-    //    alert('app.onDeviceReady');
+        alert('app.onDeviceReady');
 
-        app.logm('Устройство готово')
+        _log('Устройство готово')
         bluetooth.init();
-    },
-    logm: function(m){
-        var newMess = document.createElement('p');
-        newMess.innerHTML = m;
-        elemLogBox.appendChild(newMess);
+        iface.init();
     }
 };
 var bluetooth = {
     init: function(){
-        if(bluetoothSerial){
-            // Bluetooth init
-            bluetooth.isEnabled();
-        } else {
-            app.logm('bluetoothSerial не инициализирован');
-            return false;
-        }
-    },
-    isEnabled: function(){
+        alert('BT.Init')
+
+        var elemBTindicator = $('#bluetooth_indicator');
+
         bluetoothSerial.isEnabled(
             function() { 
-                app.logm('Bluetooth включен');
-                elemBTindicator.innerText = 'Bluetooth on';
+                _log('Bluetooth включен');
+                elemBTindicator.text('Bluetooth on');
             },
             function() { 
-                app.logm('Bluetooth выключен');
-                elemBTindicator.innerText = 'Bluetooth off';
+                _log('Bluetooth выключен');
+                elemBTindicator.text('Bluetooth off');
             }
         ); 
     },
     list : function(event){
-        alert('bluetooth.list')
+        alert('List')
 
-        app.logm('Поиск устройств...');
+        _log('Доступные устройства:','inf');
         bluetoothSerial.list(bluetooth.ondevicelist); 
     },
-    ondevicelist : function(devices){    
-        alert('bluetooth.ondevicelist')
+    ondevicelist : function(devices){
+        alert('ondevicelist')
 
-        devices.forEach(function(device) {    
-            if (device.hasOwnProperty("uuid")) {
-                app.logm('device.uuid:' + device.uuid);
-            } else if (device.hasOwnProperty("address")) {
-                app.logm('device.address:' + device.address);
-            } else {
-                app.logm('ERROR:' + JSON.stringify(device));
-            }
+        devices.forEach(function(device) {
+            var deviceOpt = {};
+
+            if (device.hasOwnProperty('name')) deviceOpt.Name = device.hasOwnProperty('name');
+            if (device.hasOwnProperty('class')) deviceOpt.Class = device.hasOwnProperty('class');
+            if (device.hasOwnProperty('uuid')) deviceOpt.Uuid = device.hasOwnProperty('uuid');
+            if (device.hasOwnProperty('address')) deviceOpt.Address = device.hasOwnProperty('address');
+            deviceOpt.err = JSON.stringify(device)
+
+            iface.deviceLabelBuild(deviceOpt);
         });
 
         if (devices.length === 0) {           
-            app.logm("Bluetooth устройства не найдены");               
+            _log('Bluetooth устройства не найдены','err');               
         } else {
-            app.logm('Найдено ' + devices.length + ' Bluetooth устройств');           
+            _log('Найдено ' + devices.length + ' Bluetooth устройств','suc');           
         }
     },
-    connect : function(){
-        alert('bluetooth.connect')
-        var id = '00:13:FD:AB:1E:23';
-        //var id = '00:13:46:01:1F:A9';
+    connect : function(address){
+        alert('Connect: '+ address)
 
-        app.logm('Соединение с: '+ id +'...');
+        _log('Соединение с: '+ address +'...','inf');
 
         bluetoothSerial.connect(
-            id,
-            bluetooth.openPort,
+            address,
+            function(){
+                _log('Соединение c '+ address +'установлено','suc');
+                iface.connectIndicator.success(address)
+                
+                bluetooth.available();
+                bluetooth.read();
+                bluetooth.readUntil();
+                bluetooth.subscribe();
+            },
             function(reason) {
-                var details = "Ошибка подключения: ";
                 if (reason) {
                     details += JSON.stringify(reason);
                 }
-                app.logm(details);
+                _log('Ошибка подключения: '+ details, 'err');
+                iface.connectIndicator.notConnect()
             }
         );
     },
     disconnect: function(){
-        alert('bluetooth.disconnect');
+        alert('Disconnect');
 
         bluetoothSerial.disconnect(
             function(){
-                app.logm('Соединение разорвано');
-            },
-            function(){
-                app.logm('Неудача при разрыве соединения');
+                _log('Соединение разорвано','suc');
             }
         );
     },
-    openPort: function(){
-        alert('bluetooth.connect success!');
-        app.logm('Соединение установлено!');
+    write: function(data){
+        alert('Write:'+ data);
 
-        bluetooth.available();
-        bluetooth.read();
-        bluetooth.readUntil();
-        bluetooth.subscribe();
-    },
-    write: function(){
-        alert('bluetooth.write');
-
-        var data = message.value + "\n";
         bluetoothSerial.write(data,
             function(){
-                app.logm('<b>'+ data +'<b/> отправлено');
+                _log('Удачно отправлено <b>'+ data +'<b/>','suc');
             }, function(){
-                app.logm('Неудача при отправке <b>'+ data +'<b/>');
+                _log('Неудача при отправке <b>'+ data +'<b/>','err');
             }
         );
     },
     available: function(){
-        alert('bluetooth.available');
+        alert('Available');
 
         bluetoothSerial.available(function (numBytes) {
-            app.logm("There are " + numBytes + " available to read.");
+            _log("There are " + numBytes + " available to read",'suc');
         });
     },
     read: function(){
-        alert('bluetooth.read');
+        alert('Read');
 
         bluetoothSerial.read(function (data) {
-            app.logm(data);
+            _log('Read: '+ data, 'suc');
         });
     },
     readUntil: function(){
-        alert('bluetooth.read');
+        alert('ReadUntil');
 
         bluetoothSerial.readUntil('\n', function (data) {
-            app.logm(data);
+            _log('ReadUntil: '+ data, 'suc');
         });
     },
     subscribe: function(){
-        alert('bluetooth.subscribe');
+        alert('Subscribe');
 
         bluetoothSerial.subscribe('\n', function (data) {
-            app.logm(data);
+            _log('Subscribe: '+ data, 'suc');
         });
     },
     unsubscribe: function(){
         alert('bluetooth.unsubscribe');
 
         bluetoothSerial.unsubscribe(function () {
-            app.logm('Подписка разорвана');
+            _log('Unsubscribe','err');
         });
     },
     clear: function(){
-        alert('bluetooth.unsubscribe');
+        alert('bluetooth.clear');
 
         bluetoothSerial.clear(function(){
-            app.logm('Буфер очишен');
+            _log('Буфер очищен','suc');
         });
     },
     isConnected: function(){
-        alert('bluetooth.isConnected');
+        alert('isConnected');
 
         bluetoothSerial.isConnected(function(connected){
             if(connected){
-                app.logm('Соединение присутствует');
+                _log('Соединено c '+ address,'suc');
+                iface.connectIndicator.success(connected)
             } else {
-                app.logm('Соединение отсутствует');
-
-                bluetooth.connect();
+                _log('Соединение отсутствует');
+                iface.connectIndicator.notConnect()
             }
         });
     }
 };
+var iface = {
+    init: function(){
+        iface.tabs();
+        iface.bind();
+    },
+    bind: function(){
+        $('#btnWrite').on('click', function(){ iface.write(); return false;});
+        $('#btnConnect').on('click', function(){ iface.connect(); return false;});
+        $('#btnList').on('click', function(){ bluetooth.list(); return false;});
+        $('#btn0xC0').on('click', function(){ bluetooth.write('\u00c0'); return false;});
+
+        $('#btnSubscribe').on('click', function(){ bluetooth.subscribe(); return false;});
+        $('#btnReadUntil').on('click', function(){ bluetooth.readUntil(); return false;});
+        $('#btnRead').on('click', function(){ bluetooth.read(); return false;});
+        $('#btnAvailable').on('click', function(){ bluetooth.available(); return false;});
+
+        $('#btnUnsubscribe').on('click', function(){ bluetooth.unsubscribe(); return false;});
+        $('#btnClear').on('click', function(){ bluetooth.clear(); return false;});
+        $('#btnDisconnect').on('click', function(){ bluetooth.disconnect(); return false;});
+        $('#btnClearLogs').on('click', function(){ iface.clearLogs(); return false;});
+
+        $('#connect_indicator').on('click', function(){ bluetooth.isConnected(); return false;});
+        
+        $('#logs_short').on('click', '.btn_device_address', function(){ 
+            iface.deviceLabelHandler($(this));
+            return false;
+        });
+    },
+    tabs: function(){
+        var $tabBtn = $('.tab_btn'),
+            $tabCont = $('.tab_cont');
+
+        $tabBtn.on('click', function(){
+            var $this = $(this),
+                id = $this.attr('href');
+            $tabBtn.removeClass('active');
+            $tabCont.removeClass('active');
+            $this.addClass('active');
+            $(id).addClass('active');
+        });
+    },
+    write: function(){
+        var data = $('#postArea').val();
+        bluetooth.write(data);
+        $('#postArea').val('');
+    },
+    connect : function(){
+        var data = $('#postArea').val();
+        bluetooth.connect(data);
+        $('#postArea').val('');
+    },
+    connectIndicator : {
+        success : function(addr){
+            if (!(addr)) return false;
+            var m = 'Подключено к '+ addr;
+            $('#connect_indicator').text(m);
+        },
+        notConnect : function(){
+            var m = 'Подключения отсутствуют';
+            $('#connect_indicator').text(m);
+        }
+    },
+    messageLog: function(m,t){
+        var logCont = $('#logs_page, #logs_short'),
+            type = '';
+
+        if (t) type = 'class="'+ t +'"';
+        logCont.append('<p '+ type +'>'+ m +'</p>')
+    },
+    deviceLabelBuild: function(o){
+        var idDevice = [];
+
+        if(o.Name) idDevice.push('<span class="name">Name: '+ o.Name +'</span>');
+        if(o.Class) idDevice.push('<span class="class">Class: '+ o.Class +'</span>');
+        if(o.Uuid) idDevice.push('<span class="uuid">'+ o.Uuid +'</span>');
+        if(o.Address) idDevice.push('<span class="address">'+ o.Address +'</span>');
+        if(!(o.Name || o.Class || o.Uuid || o.Address)) idDevice.push('<span class="error">'+
+            o.err +'</span>');
+
+        _log('<a class="btn_device_address" href="#">'+ idDevice.join('') +'</a>')
+    },
+    deviceLabelHandler: function(link){
+        console.log(link);
+
+        var addr;
+        if (link.find('.uuid')) addr = link.find('.uuid').text();
+        if (link.find('.address')) addr = link.find('.address').text();
+        $('#postArea').val(addr);
+    },
+    clearLogs : function(){
+        $('#logs_short').text('');
+    }
+}
+var _log = iface.messageLog;
