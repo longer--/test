@@ -17,12 +17,11 @@ var app = {
 };
 var bluetooth = {
     init: function(){
-        bluetoothSerial.isEnabled(
-            function() { 
+        bluetoothSerial.isEnabled(function(enabled) { 
+            if(enabled){
                 _log('Bluetooth включен');
                 $('#bluetooth_indicator').text('Bluetooth on');
-            },
-            function() { 
+            } else {
                 _log('Bluetooth выключен');
                 $('#bluetooth_indicator').text('Bluetooth off');
             }
