@@ -46,10 +46,10 @@ var bluetooth = {
         devices.forEach(function(device) {
             var deviceOpt = {};
 
-            if (device.hasOwnProperty('name')) deviceOpt.Name = device.hasOwnProperty('name');
-            if (device.hasOwnProperty('class')) deviceOpt.Class = device.hasOwnProperty('class');
-            if (device.hasOwnProperty('uuid')) deviceOpt.Uuid = device.hasOwnProperty('uuid');
-            if (device.hasOwnProperty('address')) deviceOpt.Address = device.hasOwnProperty('address');
+            if (device.hasOwnProperty('name')) deviceOpt.Name = device.name;
+            if (device.hasOwnProperty('class')) deviceOpt.Class = device.class;
+            if (device.hasOwnProperty('uuid')) deviceOpt.Uuid = device.hasOwnProperty.uuid;
+            if (device.hasOwnProperty('address')) deviceOpt.Address = device.address;
             deviceOpt.err = JSON.stringify(device)
 
             iface.deviceLabelBuild(deviceOpt);

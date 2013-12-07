@@ -35,9 +35,6 @@ body {
 /*
 ** Main Container
 */
-#content{
-    height: calc(100% - 40px);
-}
 .tabs_control{
     height: 70px;
 }
@@ -57,7 +54,6 @@ body {
 }
 .tabs_wrap{
     background: #fff;
-    height: calc(100% - 70px);
     padding: 10px;
     overflow: hidden;
 }
@@ -81,7 +77,7 @@ body {
     margin: 0 10px 10px 0;
     border: 1px solid #888;
     background: #f0f0f0;
-    padding: 0 20px;
+    padding: 0 10px;
     height: 40px;
     line-height: 40px;
     display: inline-block;
@@ -107,15 +103,20 @@ body {
 }
 .logs p{
     margin: 0 0 10px;
+    font-style: italic;
+    color: #666;
 }
 .logs .suc{
     color: blue;
+    font-style: normal;
 }
 .logs .err{
     color: red;
+    font-style: normal;
 }
 .logs .inf{
-    font-style: italic;
+    color: #000;
+    font-style: normal;
 }
 .logs .btn_device_address{
     padding: 10px;
@@ -131,5 +132,3 @@ body {
 .logs .btn_device_address .name{
     font-weight: bold;
 }
-.logs .btn_device_address{}
-.logs .btn_device_address{}
