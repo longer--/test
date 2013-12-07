@@ -25,7 +25,7 @@ var bluetooth = {
                 _log('Bluetooth выключен');
                 $('#bluetooth_indicator').text('Bluetooth off');
             }
-        ); 
+        }); 
     },
     list : function(event){
         alert('List')
@@ -149,7 +149,7 @@ var bluetooth = {
                 _log('Соединение отсутствует');
                 iface.connectIndicator.notConnect()
             }
-        });
+        );
     }
 };
 var iface = {
