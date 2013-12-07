@@ -131,15 +131,11 @@ var bluetooth = {
         });
     },
     unsubscribe: function(){
-        alert('bluetooth.unsubscribe');
-
         bluetoothSerial.unsubscribe(function () {
             _log('Unsubscribe','err');
         });
     },
     clear: function(){
-        alert('bluetooth.clear');
-
         bluetoothSerial.clear(function(){
             _log('Буфер очищен','suc');
         });
@@ -149,7 +145,7 @@ var bluetooth = {
 
         bluetoothSerial.isConnected(
             function(connected){
-                _log('Соединено c '+ address,'suc');
+                _log('Соединено c '+ connected,'suc');
                 iface.connectIndicator.success(connected)
             }, 
             function(){
