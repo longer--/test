@@ -201,6 +201,7 @@ var iface = {
             $tabCont.removeClass('active');
             $this.addClass('active');
             $(id).addClass('active');
+            return false;
         });
     },
     write: function(){
