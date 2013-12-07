@@ -10,8 +10,6 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     onDeviceReady: function() {
-        alert('app.onDeviceReady');
-
         _log('Устройство готово')
         bluetooth.init();
         iface.init();
@@ -19,8 +17,6 @@ var app = {
 };
 var bluetooth = {
     init: function(){
-        alert('BT.Init')
-
         var elemBTindicator = $('#bluetooth_indicator');
 
         bluetoothSerial.isEnabled(
@@ -151,11 +147,12 @@ var bluetooth = {
     isConnected: function(){
         alert('isConnected');
 
-        bluetoothSerial.isConnected(function(connected){
-            if(connected){
+        bluetoothSerial.isConnected(
+            function(connected){
                 _log('Соединено c '+ address,'suc');
                 iface.connectIndicator.success(connected)
-            } else {
+            }, 
+            function(){
                 _log('Соединение отсутствует');
                 iface.connectIndicator.notConnect()
             }
