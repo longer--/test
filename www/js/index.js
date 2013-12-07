@@ -10,23 +10,21 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     onDeviceReady: function() {
-        _log('Устройство готово')
+        _log('Устройство готово');
         bluetooth.init();
         iface.init();
     }
 };
 var bluetooth = {
     init: function(){
-        var elemBTindicator = $('#bluetooth_indicator');
-
         bluetoothSerial.isEnabled(
             function() { 
                 _log('Bluetooth включен');
-                elemBTindicator.text('Bluetooth on');
+                $('#bluetooth_indicator').text('Bluetooth on');
             },
             function() { 
                 _log('Bluetooth выключен');
-                elemBTindicator.text('Bluetooth off');
+                $('#bluetooth_indicator').text('Bluetooth off');
             }
         ); 
     },
