@@ -121,7 +121,7 @@ var bluetooth = {
                 _log('Соединение: '+ connected);
             }, 
             function(){
-                _log('Соединение отсутствует','err');
+                _log('Соединение отсутствует');
                 iface.connectIndicator.notConnect()
             }
         );
